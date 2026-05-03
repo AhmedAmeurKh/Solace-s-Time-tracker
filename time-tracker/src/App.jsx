@@ -203,8 +203,7 @@ const [confirmClear, setConfirmClear] = useState(false)
 
 
 
-}}
-                >
+}}>
                  clear all
               </button>) :
               
@@ -324,3 +323,4 @@ const [confirmClear, setConfirmClear] = useState(false)
 
   )
 }
+
