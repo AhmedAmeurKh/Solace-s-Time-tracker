@@ -1,0 +1,326 @@
+import { useState, useEffect } from "react"
+import Timer from "./Timer"
+//Added hackclub colors (one by one by hand ;()
+
+const colors = {
+  darker:      "#121217",
+  dark:        "#17171d",
+  darkless:    "#252429",
+  black:       "#1f2d3d",
+  steel:       "#273444",
+  slate:       "#3c4858",
+  muted:       "#8492a6",
+  smoke:       "#e0e6ed",
+  snow:        "#f9fafc",
+  white:       "#ffffff",
+  red:         "#ec3750",
+  orange:      "#ff8c37",
+  yellow:      "#f1c40f",
+  green:       "#33d6a6",
+  cyan:        "#5bc0de",
+  blue:        "#338eda",
+  purple:      "#a633d6",
+  twitter:     "#1da1f2",
+  facebook:    "#3b5998",
+  instagram:   "#e1306c",
+  text:        "#1f2d3d",
+  background:  "#ffffff",
+  elevated:    "#ffffff",
+  sheet:       "#f9fafc",
+  sunken:      "#e0e6ed",
+  border:      "#e0e6ed",
+  placeholder: "#8492a6",
+  secondary:   "#3c4858",
+  primary:     "#ec3750",
+  accent:      "#338eda",
+  BG:          "#CCC2AE",
+  TEXT:        "#37332B",
+}
+
+
+// I didnt use most of them but im going to keep them for feature use.
+
+
+//This makes the seconds show as minutes and hours or minutes and seconds for better visual format
+function timelook(s) {
+  var h   = Math.floor(s / 3600)
+
+  var m   = Math.floor((s % 3600) / 60)
+  var sec = s % 60
+
+  if (h > 0) return `${h}h ${m}m`
+  if (m > 0) return `${m}m ${sec}s`
+
+  return `${sec}s`
+}
+
+//local session saving for not loosing your sessiosn
+function loadSessions() {
+  try {
+     var saved = localStorage.getItem("time-tracker-sessions")
+    if (saved) return JSON.parse(saved)
+  } catch (e) {
+     
+    console.log("couldnt load sessions:", e)
+  }
+  return []
+}
+
+export default function App() {
+  const [task, setTask]         = useState("")
+const [sessions, setSessions] = useState(loadSessions)
+const [confirmClear, setConfirmClear] = useState(false)  
+
+  useEffect(() => {
+    try {
+       localStorage.setItem("time-tracker-sessions", JSON.stringify(sessions))
+    } catch (e) {
+         console.log("couldnt save:", e)
+    }
+  }, [sessions])
+
+  function saveSession(taskName, totalSeconds) {
+
+    if (totalSeconds < 3) return
+
+ 
+    const session = {
+      id:      Date.now(),
+      task:    taskName.trim() || "untitled",
+      seconds: totalSeconds,
+      savedAt: new Date().toLocaleTimeString([], 
+        
+        { hour: "2-digit", minute: "2-digit" }),
+
+      date:    new Date().toLocaleDateString()
+    }
+
+
+    setSessions(prev => [session, ...prev])
+    setTask("")    
+  }
+
+  function deleteSession(id) {
+    setSessions(prev => prev.filter(s => s.id !== id))
+  }
+
+  function clearAll() {
+    if (!confirmClear) {
+      setConfirmClear(true)
+      return
+
+    }
+    setSessions([])
+
+
+    setConfirmClear(false)
+
+  }
+ 
+
+//Saves the sessions current date 
+  const today     = new Date().toLocaleDateString()
+  const todaySecs = sessions
+
+    .filter(s => s.date === today)
+    .reduce((sum, s) => sum + s.seconds, 0)
+
+  const totalSecs = sessions.reduce((sum, s) => sum + s.seconds, 0)
+
+  return (
+  <div style={{ backgroundColor: colors.BG, minHeight: "100vh", color: colors.TEXT, fontFamily: "sans-serif" }}>
+
+
+      <div style={{
+
+        borderBottom: `2px solid ${colors.TEXT}18`,
+         padding: "16px 24px",
+       display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between"
+      }}>
+        <div>
+          <h1 style={{ color: colors.primary, fontSize: "22px", fontWeight: "800", margin: 0 }}>
+            Solace's Time Tracker
+
+          </h1>
+          <p style={{ color: colors.TEXT + "66", fontSize: "12px", margin: "2px 0 0" }}>
+            Don't lose your hours !
+
+          </p>
+
+</div>
+
+
+
+       {todaySecs > 0 && (
+          <div style={{ textAlign: "right" }}>
+
+           <p style={{ fontSize: "11px", color: colors.TEXT + "66", margin: 0 }}>today</p>
+          <p style={{ fontSize: "20px", fontWeight: "800", color: colors.primary, margin: 0, fontFamily: "monospace" }}>
+              {timelook(todaySecs)}
+         </p>
+          </div>
+        )}
+      </div>
+
+
+    <div style={{ maxWidth: "480px", margin: "0 auto", padding: "32px 20px" }}>
+
+          <p style={{ color: colors.TEXT + "88", fontSize: "14px", marginBottom: "20px", textAlign: "center" }}>
+          what are you working on today?</p>
+
+            <Timer
+          task={task}
+        setTask={setTask}
+          onSave={saveSession}
+          colors={colors}
+        />
+
+        {sessions.length > 0 && (
+        <div style={{ marginTop: "32px" }}>
+            
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+              <h2 style={{ fontSize: "16px", fontWeight: "700", margin: 0, display: "flex", alignItems: "center", gap: "6px" }}>
+              
+                📁 sessions
+                <span style={{ fontSize: "12px", fontWeight: "400", color: colors.TEXT + "66" }}>
+                ({sessions.length}) · {timelook(totalSecs)} total
+                </span>
+              </h2>
+              
+            {!confirmClear ? (
+                <button
+                  onClick={clearAll}
+                  style={{
+
+            background: "none",
+            border: "none",
+            color: colors.TEXT + "44",
+            fontSize: "11px",
+            cursor: "pointer",
+            padding: "4px 8px"
+
+
+
+}}
+                >
+                 clear all
+              </button>) :
+              
+              ( <div style={{ display: "flex", gap: "6px" }}>
+                  <button
+
+                    onClick={clearAll}
+                    style={{
+                      background: colors.primary,
+                      color: "white",
+                      fontSize: "11px",
+                      cursor: "pointer",
+                      padding: "4px 10px",
+                      borderRadius: "6px"
+                    }}
+                  >
+                    yes, delete
+                  </button>
+                  <button
+                    onClick={() => setConfirmClear(false)}
+                    style={{
+                    background: "none",
+                      border: `1px solid ${colors.TEXT}33`,
+                      fontSize: "11px",
+                      cursor: "pointer",
+                      padding: "4px 10px",
+                      borderRadius: "6px"
+                    }}
+                  >
+                    cancel
+                  </button>
+                </div>
+            )}
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              {sessions.map((s, i) => (
+                <div
+                  key={s.id}
+                  style={{
+                    backgroundColor: i === 0 ? colors.primary + "12" : colors.TEXT + "08",
+                    border: `1.5px solid ${i === 0 ? colors.primary + "30" : colors.TEXT + "18"}`,
+                    borderRadius: "12px",
+                    padding: "12px 16px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: "12px"
+                  }}
+                >
+                <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontWeight: "600", fontSize: "14px", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {s.task}
+                    </p>
+
+                    <p style={{ color: colors.TEXT + "66", fontSize: "11px", margin: "2px 0 0" }}>
+
+                      {s.date === today ? `today at ${s.savedAt}` : `${s.date} at ${s.savedAt}`}
+
+                    </p>
+
+
+             </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+                <span style={{ fontFamily: "monospace", fontWeight: "700", fontSize: "14px", color: i === 0 ? colors.primary : colors.TEXT + "99" }}>
+                      {timelook(s.seconds)}
+
+                   </span>
+  
+                  <button
+                      onClick={() => deleteSession(s.id)}
+                      style={{
+
+                        background: "none", 
+                        border: "none",
+                        color: colors.TEXT + "33", 
+                        cursor: "pointer",       
+                        fontSize: "14px",     
+                        padding: "2px 4px", 
+                        lineHeight: 1
+
+
+                      }}
+                      
+                      title="delete"
+                    >
+                      X
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+
+        {sessions.length === 0 && (
+          <div style={{ textAlign: "center", marginTop: "48px", color: colors.TEXT + "55" }}>
+            <p style={{ fontSize: "48px", margin: "0 0 8px" }}>⏱️</p>
+            <p style={{ fontSize: "14px", margin: 0 }}>no sessions yet.</p>
+
+            <p style={{ fontSize: "12px", marginTop: "4px" }}>start the timer and get to work!</p>
+          </div>
+        )}
+
+
+        <p style={{ textAlign: "center", color: colors.TEXT + "44", fontSize: "11px", marginTop: "40px" }}>
+          Made by Solace
+        </p>
+
+      </div>
+
+
+    </div>
+
+
+
+  )
+}
