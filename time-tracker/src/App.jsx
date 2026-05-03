@@ -144,7 +144,7 @@ const [confirmClear, setConfirmClear] = useState(false)
             Solace's Time Tracker
 
           </h1>
-          <p style={{ color: colors.TEXT + "66", fontSize: "12px", margin: "2px 0 0" }}>
+          <p style={{ color: colors.TEXT + "50", fontSize: "12px", margin: "2px 0 0" }}>
             Don't lose your hours !
 
           </p>
