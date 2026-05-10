@@ -45,6 +45,7 @@ const darkColors = {
   TEXT:        "#CCC2AE",
   green:       "#33d6a6",
   orange:      "#ff8c37",
+  placeholder: "#8492a6",
 }
 
 // I didnt use most of them but im going to keep them for feature use.
