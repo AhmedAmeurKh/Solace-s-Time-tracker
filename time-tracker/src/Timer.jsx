@@ -4,12 +4,9 @@ export default function Timer({ task, setTask, onSave, colors}) {
   const [seconds, setSeconds] = useState(0)
   const [running, setRunning] = useState(false)
   const intervalRef = useRef(null)
-//Added hackclub colors (one by one by hand ;()
 
 //removed the const colors and just made it called from App.jsx
  
-
-// I didnt use most of them but im going to keep them for feature use.
 
 
 
