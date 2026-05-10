@@ -75,6 +75,7 @@ export default function Timer({ task, setTask, onSave, colors}) {
          onChange={e => setTask(e.target.value)}
         disabled={running}
         placeholder="Session name"
+
         style={{ width: "100%",  backgroundColor: running ? colors.TEXT + "06" : "transparent",   border: `1.5px solid ${colors.TEXT}${running ? "18" : "33"}`,  borderRadius: "10px", padding: "10px 14px",fontSize: "14px", color: colors.TEXT, outline: "none",  marginBottom: "24px", boxSizing: "border-box", cursor: running ? "not-allowed" : "text"}}/>           
       <p style={{fontSize: "clamp(36px, 12vw, 68px)",fontWeight: "800",fontFamily: "monospace",color: running ? colors.primary : colors.TEXT, margin: "0 0 8px", letterSpacing: "-2px",  transition: "color 0.3s"}}>
   {format(seconds)}
@@ -95,17 +96,19 @@ export default function Timer({ task, setTask, onSave, colors}) {
 
         <button
           onClick={start}
-          style={{            backgroundColor: running ? colors.orange : colors.primary, color: "white", borderRadius: "12px", padding: "12px 28px", fontSize: "15px", fontWeight: "700",cursor: "pointer" }}>
+          style={{     
+                   backgroundColor: running ? colors.orange : colors.primary, color: "white", borderRadius: "12px", padding: "12px 28px", fontSize: "15px", fontWeight: "700",cursor: "pointer" }}>
           {running ? "⏸ pause" : seconds > 0 ? "▶ resume" : "▶ start"} </button>
-
+ 
      {seconds > 0 && !running && (
           <button
           onClick={save}
+
         style={{backgroundColor: colors.green,color: "white",borderRadius: "12px", padding: "12px 24px",fontSize: "15px", fontWeight: "700", cursor: "pointer"}}>
             ✓ ship it! </button>)}
 
          
-        {seconds > 0 && (<button onClick={reset} style={{backgroundColor: "transparent", color: colors.TEXT + "88",border: `1.5px solid ${colors.TEXT}28`, borderRadius: "12px", padding: "12px 20px", fontSize: "15px", fontWeight: "600", cursor: "pointer"}} >
+         {seconds > 0 && (<button onClick={reset} style={{backgroundColor: "transparent", color: colors.TEXT + "88",border: `1.5px solid ${colors.TEXT}28`, borderRadius: "12px", padding: "12px 20px", fontSize: "15px", fontWeight: "600", cursor: "pointer"}} >
 
             ↺ reset </button>)}
      </div>
