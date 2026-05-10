@@ -163,19 +163,22 @@ return (
           Don't lose your hours !
         </p>
       </div>
-      
+
       <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
 
         {todaySecs > 0 && (
           <div style={{ textAlign: "right" }}>
             <p style={{ fontSize: "11px", color: c.TEXT + "66", margin: 0 }}>today</p>
+
+
             <p style={{ fontSize: "20px", fontWeight: "800", color: c.primary, margin: 0, fontFamily: "monospace" }}>
               {timelook(todaySecs)}
             </p>
+
           </div>
         )}
 
-        {/* Darkmode's Button */}
+             {/* Darkmode's Button */}
         <button
           onClick={() => setDarkMode(prev => !prev)}
           style={{
@@ -188,7 +191,7 @@ return (
             color: c.TEXT,
           }}
         >
-          {darkMode ? "☀️" : "🌙"}
+           {darkMode ? "☀️" : "🌙"}
         </button>
 
       </div>
