@@ -40,7 +40,7 @@ The intent was a summery vibe, using vivid colors that remind you of the sea san
 ---
 
 ## Future Plans
-- Add dark mode toggle
+- Add dark mode toggle //Feature added!
 - Export time data
 - Sound notification when pausing/saving
 - More customization options (maybe custom themes ?)
