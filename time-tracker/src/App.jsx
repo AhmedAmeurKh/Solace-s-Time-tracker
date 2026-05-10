@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import Timer from "./Timer"
 //Added hackclub colors (one by one by hand ;()
 
+
 const colors = {
   darker:      "#121217",
   dark:        "#17171d",
@@ -37,6 +38,12 @@ const colors = {
   TEXT:        "#37332B",
 }
 
+//Darkmode's colors
+const darkColors = {
+  primary:     "#ec3750",
+  BG:          "#37332B",
+  TEXT:        "#CCC2AE",
+}
 
 // I didnt use most of them but im going to keep them for feature use.
 
@@ -67,9 +74,14 @@ function loadSessions() {
 }
 
 export default function App() {
-  const [task, setTask]         = useState("")
+
+const [task, setTask]         = useState("")
 const [sessions, setSessions] = useState(loadSessions)
 const [confirmClear, setConfirmClear] = useState(false)  
+
+//Add Dark mode
+const [darkMode, setDarkMode] = useState(false)
+const c = darkMode ? darkColors : colors
 
   useEffect(() => {
     try {
@@ -115,6 +127,9 @@ const [confirmClear, setConfirmClear] = useState(false)
 
     setConfirmClear(false)
 
+
+
+
   }
  
 
@@ -128,36 +143,53 @@ const [confirmClear, setConfirmClear] = useState(false)
   const totalSecs = sessions.reduce((sum, s) => sum + s.seconds, 0)
 
   return (
-  <div style={{ backgroundColor: colors.BG, minHeight: "100vh", color: colors.TEXT, fontFamily: "sans-serif" }}>
+  <div style={{ backgroundColor: c.BG, minHeight: "100vh", color: c.TEXT, fontFamily: "sans-serif" }}>
 
 
       <div style={{
 
-        borderBottom: `2px solid ${colors.TEXT}18`,
+        borderBottom: `2px solid ${c.TEXT}18`,
          padding: "16px 24px",
        display: "flex",
         alignItems: "center",
         justifyContent: "space-between"
       }}>
         <div>
-          <h1 style={{ color: colors.primary, fontSize: "22px", fontWeight: "800", margin: 0 }}>
+          <h1 style={{ color: c.primary, fontSize: "22px", fontWeight: "800", margin: 0 }}>
             Solace's Time Tracker
 
           </h1>
-          <p style={{ color: colors.TEXT + "50", fontSize: "12px", margin: "2px 0 0" }}>
+          <p style={{ color: c.TEXT + "50", fontSize: "12px", margin: "2px 0 0" }}>
             Don't lose your hours !
 
           </p>
-
+     
 </div>
 
+
+{/* Darkmode's Button */}
+
+<div>
+   <button
+        onClick={()=> setDarkMode(prev=> !prev)}
+        style={{
+           border: `1px solid ${c.TEXT}33`,
+           borderRadius: "8px",
+           padding: "6px 12px",
+           cursor: "pointer",
+           fontSize: "16px",
+           color: c.TEXT,
+  }}>
+      {darkMode ? "☀️" : "🌙"}
+      </button>
+</div>
 
 
        {todaySecs > 0 && (
           <div style={{ textAlign: "right" }}>
 
-           <p style={{ fontSize: "11px", color: colors.TEXT + "66", margin: 0 }}>today</p>
-          <p style={{ fontSize: "20px", fontWeight: "800", color: colors.primary, margin: 0, fontFamily: "monospace" }}>
+           <p style={{ fontSize: "11px", color: c.TEXT + "66", margin: 0 }}>today</p>
+          <p style={{ fontSize: "20px", fontWeight: "800", color: c.primary, margin: 0, fontFamily: "monospace" }}>
               {timelook(todaySecs)}
          </p>
           </div>
@@ -167,14 +199,14 @@ const [confirmClear, setConfirmClear] = useState(false)
 
     <div style={{ maxWidth: "480px", margin: "0 auto", padding: "32px 20px" }}>
 
-          <p style={{ color: colors.TEXT + "88", fontSize: "14px", marginBottom: "20px", textAlign: "center" }}>
+          <p style={{ color: c.TEXT + "88", fontSize: "14px", marginBottom: "20px", textAlign: "center" }}>
           what are you working on today?</p>
 
             <Timer
           task={task}
         setTask={setTask}
           onSave={saveSession}
-          colors={colors}
+          colors={c}
         />
 
         {sessions.length > 0 && (
@@ -184,7 +216,7 @@ const [confirmClear, setConfirmClear] = useState(false)
               <h2 style={{ fontSize: "16px", fontWeight: "700", margin: 0, display: "flex", alignItems: "center", gap: "6px" }}>
               
                 📁 sessions
-                <span style={{ fontSize: "12px", fontWeight: "400", color: colors.TEXT + "66" }}>
+                <span style={{ fontSize: "12px", fontWeight: "400", color: c.TEXT + "66" }}>
                 ({sessions.length}) · {timelook(totalSecs)} total
                 </span>
               </h2>
@@ -196,7 +228,7 @@ const [confirmClear, setConfirmClear] = useState(false)
 
             background: "none",
             border: "none",
-            color: colors.TEXT + "44",
+            color: c.TEXT + "44",
             fontSize: "11px",
             cursor: "pointer",
             padding: "4px 8px"
@@ -212,7 +244,7 @@ const [confirmClear, setConfirmClear] = useState(false)
 
                     onClick={clearAll}
                     style={{
-                      background: colors.primary,
+                      background: c.primary,
                       color: "white",
                       fontSize: "11px",
                       cursor: "pointer",
@@ -226,7 +258,7 @@ const [confirmClear, setConfirmClear] = useState(false)
                     onClick={() => setConfirmClear(false)}
                     style={{
                     background: "none",
-                      border: `1px solid ${colors.TEXT}33`,
+                      border: `1px solid ${c.TEXT}33`,
                       fontSize: "11px",
                       cursor: "pointer",
                       padding: "4px 10px",
@@ -244,8 +276,8 @@ const [confirmClear, setConfirmClear] = useState(false)
                 <div
                   key={s.id}
                   style={{
-                    backgroundColor: i === 0 ? colors.primary + "12" : colors.TEXT + "08",
-                    border: `1.5px solid ${i === 0 ? colors.primary + "30" : colors.TEXT + "18"}`,
+                    backgroundColor: i === 0 ? c.primary + "12" : c.TEXT + "08",
+                    border: `1.5px solid ${i === 0 ? c.primary + "30" : c.TEXT + "18"}`,
                     borderRadius: "12px",
                     padding: "12px 16px",
                     display: "flex",
@@ -259,7 +291,7 @@ const [confirmClear, setConfirmClear] = useState(false)
                       {s.task}
                     </p>
 
-                    <p style={{ color: colors.TEXT + "66", fontSize: "11px", margin: "2px 0 0" }}>
+                    <p style={{ color: c.TEXT + "66", fontSize: "11px", margin: "2px 0 0" }}>
 
                       {s.date === today ? `today at ${s.savedAt}` : `${s.date} at ${s.savedAt}`}
 
@@ -268,7 +300,7 @@ const [confirmClear, setConfirmClear] = useState(false)
 
              </div>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
-                <span style={{ fontFamily: "monospace", fontWeight: "700", fontSize: "14px", color: i === 0 ? colors.primary : colors.TEXT + "99" }}>
+                <span style={{ fontFamily: "monospace", fontWeight: "700", fontSize: "14px", color: i === 0 ? c.primary : c.TEXT + "99" }}>
                       {timelook(s.seconds)}
 
                    </span>
@@ -279,7 +311,7 @@ const [confirmClear, setConfirmClear] = useState(false)
 
                         background: "none", 
                         border: "none",
-                        color: colors.TEXT + "33", 
+                        color: c.TEXT + "33", 
                         cursor: "pointer",       
                         fontSize: "14px",     
                         padding: "2px 4px", 
@@ -301,7 +333,7 @@ const [confirmClear, setConfirmClear] = useState(false)
 
 
         {sessions.length === 0 && (
-          <div style={{ textAlign: "center", marginTop: "48px", color: colors.TEXT + "55" }}>
+          <div style={{ textAlign: "center", marginTop: "48px", color: c.TEXT + "55" }}>
             <p style={{ fontSize: "48px", margin: "0 0 8px" }}>⏱️</p>
             <p style={{ fontSize: "14px", margin: 0 }}>no sessions yet.</p>
 
@@ -310,7 +342,7 @@ const [confirmClear, setConfirmClear] = useState(false)
         )}
 
 
-        <p style={{ textAlign: "center", color: colors.TEXT + "44", fontSize: "11px", marginTop: "40px" }}>
+        <p style={{ textAlign: "center", color: c.TEXT + "44", fontSize: "11px", marginTop: "40px" }}>
           Made by Solace
         </p>
 
