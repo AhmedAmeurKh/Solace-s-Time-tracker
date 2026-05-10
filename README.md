@@ -19,6 +19,7 @@ You can name your session, start/pause, save your time, and reset. Perfect for p
 - Sessions are saved locally
 - Shows you how much you worked today
 - Time and date saved for each session
+- Dark mode toggle
 
 ---
 
@@ -40,7 +41,6 @@ The intent was a summery vibe, using vivid colors that remind you of the sea san
 ---
 
 ## Future Plans
-- Add dark mode toggle //Feature added!
 - Export time data
 - Sound notification when pausing/saving
 - More customization options (maybe custom themes ?)
