@@ -43,6 +43,7 @@ const darkColors = {
   primary:     "#ec3750",
   BG:          "#37332B",
   TEXT:        "#CCC2AE",
+  green:       "#33d6a6",
 }
 
 // I didnt use most of them but im going to keep them for feature use.
@@ -180,6 +181,7 @@ const c = darkMode ? darkColors : colors
            fontSize: "16px",
            color: c.TEXT,
   }}>
+
       {darkMode ? "☀️" : "🌙"}
       </button>
 </div>
