@@ -44,6 +44,7 @@ const darkColors = {
   BG:          "#37332B",
   TEXT:        "#CCC2AE",
   green:       "#33d6a6",
+  orange:      "#ff8c37",
 }
 
 // I didnt use most of them but im going to keep them for feature use.
@@ -143,60 +144,55 @@ const c = darkMode ? darkColors : colors
 
   const totalSecs = sessions.reduce((sum, s) => sum + s.seconds, 0)
 
-  return (
+return (
   <div style={{ backgroundColor: c.BG, minHeight: "100vh", color: c.TEXT, fontFamily: "sans-serif" }}>
 
+    <div style={{
+      borderBottom: `2px solid ${c.TEXT}18`,
+      padding: "16px 24px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between"
+    }}>
 
-      <div style={{
+      <div>
+        <h1 style={{ color: c.primary, fontSize: "22px", fontWeight: "800", margin: 0 }}>
+          Solace's Time Tracker
+        </h1>
+        <p style={{ color: c.TEXT + "50", fontSize: "12px", margin: "2px 0 0" }}>
+          Don't lose your hours !
+        </p>
+      </div>
+      
+      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
 
-        borderBottom: `2px solid ${c.TEXT}18`,
-         padding: "16px 24px",
-       display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between"
-      }}>
-        <div>
-          <h1 style={{ color: c.primary, fontSize: "22px", fontWeight: "800", margin: 0 }}>
-            Solace's Time Tracker
-
-          </h1>
-          <p style={{ color: c.TEXT + "50", fontSize: "12px", margin: "2px 0 0" }}>
-            Don't lose your hours !
-
-          </p>
-     
-</div>
-
-
-{/* Darkmode's Button */}
-
-<div>
-   <button
-        onClick={()=> setDarkMode(prev=> !prev)}
-        style={{
-           border: `1px solid ${c.TEXT}33`,
-           borderRadius: "8px",
-           padding: "6px 12px",
-           cursor: "pointer",
-           fontSize: "16px",
-           color: c.TEXT,
-  }}>
-
-      {darkMode ? "☀️" : "🌙"}
-      </button>
-</div>
-
-
-       {todaySecs > 0 && (
+        {todaySecs > 0 && (
           <div style={{ textAlign: "right" }}>
-
-           <p style={{ fontSize: "11px", color: c.TEXT + "66", margin: 0 }}>today</p>
-          <p style={{ fontSize: "20px", fontWeight: "800", color: c.primary, margin: 0, fontFamily: "monospace" }}>
+            <p style={{ fontSize: "11px", color: c.TEXT + "66", margin: 0 }}>today</p>
+            <p style={{ fontSize: "20px", fontWeight: "800", color: c.primary, margin: 0, fontFamily: "monospace" }}>
               {timelook(todaySecs)}
-         </p>
+            </p>
           </div>
         )}
+
+        {/* Darkmode's Button */}
+        <button
+          onClick={() => setDarkMode(prev => !prev)}
+          style={{
+            background: "none",
+            border: `1px solid ${c.TEXT}33`,
+            borderRadius: "8px",
+            padding: "6px 12px",
+            cursor: "pointer",
+            fontSize: "16px",
+            color: c.TEXT,
+          }}
+        >
+          {darkMode ? "☀️" : "🌙"}
+        </button>
+
       </div>
+    </div>
 
 
     <div style={{ maxWidth: "480px", margin: "0 auto", padding: "32px 20px" }}>
